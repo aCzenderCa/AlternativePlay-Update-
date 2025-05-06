@@ -22,16 +22,14 @@ namespace AlternativePlay.HarmonyPatches
             if (Configuration.Current.PlayMode == PlayMode.BeatFlail && Configuration.Current.MoveNotesBack > 0)
             {
                 float realMoveNote = Configuration.Current.MoveNotesBack / 100.0f;
-                noteSpawnData = new NoteSpawnData(noteSpawnData.moveStartOffset with
-                {
-                    z = noteSpawnData.moveStartOffset.z - realMoveNote
-                }, noteSpawnData.moveEndOffset with
-                {
-                    z = noteSpawnData.moveEndOffset.z - realMoveNote
-                }, noteSpawnData.jumpEndOffset with
-                {
-                    z = noteSpawnData.jumpEndOffset.z - realMoveNote
-                }, noteSpawnData.gravityBase);
+                var moveStartOffset = noteSpawnData.moveStartOffset;
+                moveStartOffset.z -= realMoveNote;
+                var moveEndOffset = noteSpawnData.moveEndOffset;
+                moveEndOffset.z -= realMoveNote;
+                var jumpEndOffset = noteSpawnData.jumpEndOffset;
+                jumpEndOffset.z -= realMoveNote;
+                noteSpawnData = new NoteSpawnData(moveStartOffset, moveEndOffset, jumpEndOffset,
+                    noteSpawnData.gravityBase);
             }
         }
 
@@ -43,10 +41,10 @@ namespace AlternativePlay.HarmonyPatches
             if (Configuration.Current.PlayMode == PlayMode.BeatFlail && Configuration.Current.MoveNotesBack > 0)
             {
                 float realMoveNote = Configuration.Current.MoveNotesBack / 100.0f;
-                obstacleSpawnData = new ObstacleSpawnData(obstacleSpawnData.moveOffset with
-                {
-                    z = obstacleSpawnData.moveOffset.z - realMoveNote
-                }, obstacleSpawnData.obstacleWidth, obstacleSpawnData.obstacleHeight);
+                var moveOffset = obstacleSpawnData.moveOffset;
+                moveOffset.z = obstacleSpawnData.moveOffset.z - realMoveNote;
+                obstacleSpawnData = new ObstacleSpawnData(moveOffset, obstacleSpawnData.obstacleWidth,
+                    obstacleSpawnData.obstacleHeight);
             }
         }
     }
